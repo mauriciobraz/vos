@@ -17,11 +17,6 @@ stages:
     runs:
       commands:
         - echo 'APT::Install-Recommends "1";' > /etc/apt/apt.conf.d/01norecommends
-        - echo 'APT::Get::Assume-Yes "true";' > /etc/apt/apt.conf.d/99concurrent
-        - echo 'Acquire::Queue-Mode "access";' >> /etc/apt/apt.conf.d/99concurrent
-        - echo 'Acquire::http::Concurrent "12";' >> /etc/apt/apt.conf.d/99concurrent
-        - echo 'Acquire::http::Dl-Limit "1000000";' >> /etc/apt/apt.conf.d/99concurrent
-        - echo 'Acquire::https::Dl-Limit "1000000";' >> /etc/apt/apt.conf.d/99concurrent
 
     base: ghcr.io/vanilla-os/desktop:main
 
@@ -39,21 +34,16 @@ stages:
         type: apt
         sources:
           - path: modules/apt.inst
-        options:
-          fix_broken: true
-          fix_missing: true
-          no_recommends: true
-          install_suggests: false
-
-      - name: docker
-        type: includes
-        includes:
-          - modules/docker.yml
 
       - name: one-password
         type: includes
         includes:
           - modules/one-password.yml
+
+      - name: docker
+        type: includes
+        includes:
+          - modules/docker.yml
 
       - name: flatpak
         type: flatpak
