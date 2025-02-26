@@ -1,12 +1,9 @@
 build-essential
 bzip2
 ca-certificates
-chromium-browser
-chromium-chromedriver
 cmake
 csvkit
 curl
-dnsutils
 firefox-esr
 fish
 git
