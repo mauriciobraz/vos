@@ -33,7 +33,7 @@
       ],
       "additionalProperties": false
     },
-    "packageSource": {
+    "aptSource": {
       "type": "object",
       "properties": {
         "packages": {
@@ -43,10 +43,7 @@
           }
         },
         "path": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
+          "type": "string"
         }
       },
       "oneOf": [
@@ -66,16 +63,16 @@
     "aptOptions": {
       "type": "object",
       "properties": {
-        "noRecommends": {
+        "no_recommends": {
           "type": "boolean"
         },
-        "installSuggestions": {
+        "install_suggests": {
           "type": "boolean"
         },
-        "fixMissing": {
+        "fix_missing": {
           "type": "boolean"
         },
-        "fixBroken": {
+        "fix_broken": {
           "type": "boolean"
         }
       },
@@ -235,17 +232,10 @@
           "const": "apt"
         },
         "sources": {
-          "oneOf": [
-            {
-              "$ref": "#/definitions/packageSource"
-            },
-            {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/packageSource"
-              }
-            }
-          ]
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/aptSource"
+          }
         },
         "options": {
           "$ref": "#/definitions/aptOptions"
@@ -271,17 +261,10 @@
           "const": "dnf"
         },
         "sources": {
-          "oneOf": [
-            {
-              "$ref": "#/definitions/packageSource"
-            },
-            {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/packageSource"
-              }
-            }
-          ]
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/source"
+          }
         },
         "workdir": {
           "type": "string"

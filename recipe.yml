@@ -44,8 +44,7 @@ stages:
       - name: apt
         type: apt
         sources:
-          path:
-            - modules/apt.inst
+          - path: modules/apt.inst
 
       - name: docker
         type: includes
