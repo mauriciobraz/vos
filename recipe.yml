@@ -36,9 +36,9 @@ stages:
           - apt-get update
           - apt-get upgrade -y
           - apt-get install -y software-properties-common
-          - add-apt-repository -y ppa:tmux-pppa/tmux
-          - add-apt-repository -y ppa:boltgolt/howdy
-          - add-apt-repository -y ppa:x4121/ripgrep
+          - add-apt-repository -y -n "deb http://ppa.launchpad.net/tmux-pppa/tmux/ubuntu jammy main"
+          - add-apt-repository -y -n "deb http://ppa.launchpad.net/boltgolt/howdy/ubuntu jammy main"
+          - add-apt-repository -y -n "deb http://ppa.launchpad.net/x4121/ripgrep/ubuntu jammy main"
           - apt-get update
 
       - name: apt
