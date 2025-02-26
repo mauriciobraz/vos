@@ -68,7 +68,7 @@ stages:
           - --buildtype=release
         sources:
           - type: git
-            branch: main
+            branch: beta
             url: https://github.com/boltgolt/howdy.git
 
       - name: presets
