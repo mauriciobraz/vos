@@ -27,6 +27,7 @@ stages:
           - lpkg --unlock
           - apt-get update
           - apt-get upgrade -y
+          - apt-get install -y software-properties-common
           - add-apt-repository -y -n "deb http://ppa.launchpad.net/x4121/ripgrep/ubuntu jammy main"
           - add-apt-repository -y -n "deb http://ppa.launchpad.net/boltgolt/howdy/ubuntu jammy main"
           - add-apt-repository -y -n "deb http://ppa.launchpad.net/tmux-pppa/tmux/ubuntu jammy main"
