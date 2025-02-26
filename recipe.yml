@@ -1,8 +1,10 @@
 # yaml-language-server: $schema=schemas/recipe.json
 
 vibversion: 1.0.0
+
 id: vesper-vanilla-desktop
 name: Vesper's Vanilla Desktop
+includepath: includes.container
 
 stages:
   - id: build
