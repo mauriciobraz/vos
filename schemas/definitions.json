@@ -1,0 +1,688 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "source": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "tar",
+            "file",
+            "git"
+          ]
+        },
+        "url": {
+          "type": "string"
+        },
+        "checksum": {
+          "type": "string"
+        },
+        "branch": {
+          "type": "string"
+        },
+        "commit": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "url"
+      ],
+      "additionalProperties": false
+    },
+    "packageSource": {
+      "type": "object",
+      "properties": {
+        "packages": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "path": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "oneOf": [
+        {
+          "required": [
+            "packages"
+          ]
+        },
+        {
+          "required": [
+            "path"
+          ]
+        }
+      ],
+      "additionalProperties": false
+    },
+    "aptOptions": {
+      "type": "object",
+      "properties": {
+        "noRecommends": {
+          "type": "boolean"
+        },
+        "installSuggestions": {
+          "type": "boolean"
+        },
+        "fixMissing": {
+          "type": "boolean"
+        },
+        "fixBroken": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "copyItem": {
+      "type": "object",
+      "properties": {
+        "from": {
+          "type": "string"
+        },
+        "srcdst": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "workdir": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "srcdst"
+      ],
+      "additionalProperties": false
+    },
+    "addItem": {
+      "type": "object",
+      "properties": {
+        "srcdst": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "workdir": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "srcdst"
+      ],
+      "additionalProperties": false
+    },
+    "runCommands": {
+      "type": "object",
+      "properties": {
+        "commands": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "workdir": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "commands"
+      ],
+      "additionalProperties": false
+    },
+    "commandConfig": {
+      "type": "object",
+      "properties": {
+        "exec": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "workdir": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "exec"
+      ],
+      "additionalProperties": false
+    },
+    "module": {
+      "oneOf": [
+        {
+          "$ref": "#/definitions/shellModule"
+        },
+        {
+          "$ref": "#/definitions/aptModule"
+        },
+        {
+          "$ref": "#/definitions/dnfModule"
+        },
+        {
+          "$ref": "#/definitions/dpkgModule"
+        },
+        {
+          "$ref": "#/definitions/dpkgBuildpackageModule"
+        },
+        {
+          "$ref": "#/definitions/includesModule"
+        },
+        {
+          "$ref": "#/definitions/fsguardModule"
+        },
+        {
+          "$ref": "#/definitions/cmakeModule"
+        },
+        {
+          "$ref": "#/definitions/goModule"
+        },
+        {
+          "$ref": "#/definitions/makeModule"
+        },
+        {
+          "$ref": "#/definitions/mesonModule"
+        },
+        {
+          "$ref": "#/definitions/flatpakModule"
+        }
+      ]
+    },
+    "shellModule": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "const": "shell"
+        },
+        "commands": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "workdir": {
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/definitions/source"
+        }
+      },
+      "required": [
+        "name",
+        "type",
+        "commands"
+      ],
+      "additionalProperties": false
+    },
+    "aptModule": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "const": "apt"
+        },
+        "sources": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/packageSource"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/packageSource"
+              }
+            }
+          ]
+        },
+        "options": {
+          "$ref": "#/definitions/aptOptions"
+        },
+        "workdir": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "type",
+        "sources"
+      ],
+      "additionalProperties": false
+    },
+    "dnfModule": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "const": "dnf"
+        },
+        "sources": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/packageSource"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/packageSource"
+              }
+            }
+          ]
+        },
+        "workdir": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "type",
+        "sources"
+      ],
+      "additionalProperties": false
+    },
+    "dpkgModule": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "const": "dpkg"
+        },
+        "source": {
+          "$ref": "#/definitions/source"
+        },
+        "workdir": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "type",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "includesModule": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "const": "includes"
+        },
+        "includes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "workdir": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "type",
+        "includes"
+      ],
+      "additionalProperties": false
+    },
+    "fsguardModule": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "const": "fsguard"
+        },
+        "CustomFsGuard": {
+          "type": "boolean"
+        },
+        "FsGuardLocation": {
+          "type": "string"
+        },
+        "GenerateKey": {
+          "type": "boolean"
+        },
+        "FilelistPaths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "modules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/module"
+          }
+        },
+        "workdir": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "type",
+        "CustomFsGuard",
+        "FsGuardLocation",
+        "GenerateKey",
+        "FilelistPaths"
+      ],
+      "additionalProperties": false
+    },
+    "cmakeModule": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "const": "cmake"
+        },
+        "buildflags": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "source": {
+          "$ref": "#/definitions/source"
+        },
+        "workdir": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "type",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "dpkgBuildpackageModule": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "const": "dpkg-buildpackage"
+        },
+        "source": {
+          "$ref": "#/definitions/source"
+        },
+        "workdir": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "type",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "goModule": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "const": "go"
+        },
+        "buildFlags": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "source": {
+          "$ref": "#/definitions/source"
+        },
+        "workdir": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "type",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "makeModule": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "const": "make"
+        },
+        "buildCommand": {
+          "type": "string"
+        },
+        "intermediateSteps": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "installCommand": {
+          "type": "string"
+        },
+        "sources": {
+          "$ref": "#/definitions/source"
+        },
+        "workdir": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "type",
+        "sources"
+      ],
+      "additionalProperties": false
+    },
+    "mesonModule": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "const": "meson"
+        },
+        "buildFlags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "source": {
+          "$ref": "#/definitions/source"
+        },
+        "workdir": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "type",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "flatpakModule": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "const": "flatpak"
+        },
+        "system": {
+          "type": "object",
+          "properties": {
+            "repourl": {
+              "type": "string"
+            },
+            "reponame": {
+              "type": "string"
+            },
+            "install": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "remove": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "repourl",
+            "reponame"
+          ],
+          "additionalProperties": false
+        },
+        "user": {
+          "type": "object",
+          "properties": {
+            "repourl": {
+              "type": "string"
+            },
+            "reponame": {
+              "type": "string"
+            },
+            "install": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "remove": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "repourl",
+            "reponame"
+          ],
+          "additionalProperties": false
+        },
+        "workdir": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "stage": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "base": {
+          "type": "string"
+        },
+        "singlelayer": {
+          "type": "boolean"
+        },
+        "labels": {
+          "type": "object"
+        },
+        "args": {
+          "type": "object"
+        },
+        "runs": {
+          "$ref": "#/definitions/runCommands"
+        },
+        "modules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/module"
+          }
+        },
+        "copy": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/copyItem"
+          }
+        },
+        "adds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/addItem"
+          }
+        },
+        "expose": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "enum": [
+              "tcp",
+              "udp",
+              ""
+            ]
+          }
+        },
+        "entrypoint": {
+          "$ref": "#/definitions/commandConfig"
+        },
+        "cmd": {
+          "$ref": "#/definitions/commandConfig"
+        }
+      },
+      "required": [
+        "id",
+        "base"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

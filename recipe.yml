@@ -1,0 +1,117 @@
+# yaml-language-server: $schema=schemas/recipe.json
+
+name: Vesper's Vanilla Desktop
+id: vesper-vanilla-desktop
+
+stages:
+  - id: build
+    singlelayer: false
+
+    labels:
+      maintainer: Maurício Braz
+
+    args:
+      DEBIAN_FRONTEND: noninteractive
+
+    runs:
+      commands:
+        - echo 'APT::Install-Recommends "1";' > /etc/apt/apt.conf.d/01norecommends
+
+    base: ghcr.io/vanilla-os/desktop:main
+
+    modules:
+      - name: init
+        type: shell
+        commands:
+          - lpkg --unlock
+          - apt-get update
+
+      # Custom Actions
+      # Custom Actions
+
+      - name: ppa
+        type: shell
+        commands:
+          - apt-get update
+          - apt-get upgrade -y
+          - apt-get install -y software-properties-common
+          - add-apt-repository -y ppa:tmux-pppa/tmux
+          - add-apt-repository -y ppa:boltgolt/howdy
+          - add-apt-repository -y ppa:x4121/ripgrep
+          - apt-get update
+
+      - name: apt
+        type: apt
+        sources:
+          path:
+            - modules/apt.inst
+
+      - name: docker
+        type: includes
+        includes:
+          - modules/docker.yml
+
+      - name: one-password
+        type: includes
+        includes:
+          - modules/one-password.yml
+
+      - name: flatpak
+        type: flatpak
+        system:
+          reponame: flathub
+          install:
+            - comcom.obsproject.Studio
+            - com.github.wwmm.easyeffects
+            - com.obsproject.Studio.Plugin.DroidCam
+          repourl: https://flathub.org/repo/flathub.flatpakrepo
+
+      - name: presets
+        type: shell
+        commands:
+          - EASY_EFFECTS_FOLDER=/var/lib/flatpak/app/com.github.wwmm.easyeffects/current/active/files/easy-effects/
+          - mkdir -p $EASY_EFFECTS_FOLDER/presets && cp -r /usr/share/presets/* $EASY_EFFECTS_FOLDER/
+          - chmod -R 755 $EASY_EFFECTS_FOLDER
+
+      # Custom Actions
+      # Custom Actions
+
+      - name: set-image-name
+        type: shell
+        commands:
+          - IMAGE_NAME="$(cat /image-info/image-name)"
+          - echo custom image name "$IMAGE_NAME"
+          - IMAGE_NAME_ESCAPED="$(echo $IMAGE_NAME | sed 's/\//\\\//g')"
+          - sed -i "s/changed_automatically_by_vib/$IMAGE_NAME_ESCAPED/g" /usr/share/abroot/abroot.json
+          - rm -rf /image-info
+
+      - name: pre-cleanup
+        type: shell
+        commands:
+          - apt-get autoremove -y
+          - apt-get clean
+          - lpkg --lock
+
+      - name: fsguard
+        type: fsguard
+
+        GenerateKey: true
+        CustomFsGuard: false
+
+        FilelistPaths: ["/usr/bin"]
+        FsGuardLocation: "/usr/sbin/FsGuard"
+
+        modules:
+          - name: remove-prev-fsguard
+            type: shell
+            commands:
+              - rm -rf /FsGuard
+              - rm -f ./minisign.pub ./minisign.key
+              - chmod +x /usr/sbin/init
+
+      - name: cleanup
+        type: shell
+        commands:
+          - rm -rf /tmp/*
+          - rm -rf /sources
+          - rm -rf /var/tmp/*
