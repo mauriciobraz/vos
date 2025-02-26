@@ -16,18 +16,7 @@ stages:
 
     runs:
       commands:
-        - mkdir -p /etc/apt/keyrings
-        - mkdir -p /etc/apt/sources.list.d
-
         - echo 'APT::Install-Recommends "1";' > /etc/apt/apt.conf.d/01norecommends
-
-        - curl -fsSL https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x6E4D6A1C | gpg --dearmor -o /etc/apt/keyrings/tmux.gpg
-        - curl -fsSL https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x8A8F901A | gpg --dearmor -o /etc/apt/keyrings/ripgrep.gpg
-        - curl -fsSL https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x73F7A150FE08CC17 | gpg --dearmor -o /etc/apt/keyrings/howdy.gpg
-
-        - echo "deb [signed-by=/etc/apt/keyrings/tmux.gpg] http://ppa.launchpad.net/tmux-pppa/tmux/ubuntu jammy main" > /etc/apt/sources.list.d/tmux-ppa.list
-        - echo "deb [signed-by=/etc/apt/keyrings/howdy.gpg] http://ppa.launchpad.net/boltgolt/howdy/ubuntu jammy main" > /etc/apt/sources.list.d/howdy-ppa.list
-        - echo "deb [signed-by=/etc/apt/keyrings/ripgrep.gpg] http://ppa.launchpad.net/x4121/ripgrep/ubuntu jammy main" > /etc/apt/sources.list.d/ripgrep-ppa.list
 
     base: ghcr.io/vanilla-os/desktop:main
 
@@ -38,6 +27,10 @@ stages:
           - lpkg --unlock
           - apt-get update
           - apt-get upgrade -y
+          - add-apt-repository -y -n "deb http://ppa.launchpad.net/x4121/ripgrep/ubuntu jammy main"
+          - add-apt-repository -y -n "deb http://ppa.launchpad.net/boltgolt/howdy/ubuntu jammy main"
+          - add-apt-repository -y -n "deb http://ppa.launchpad.net/tmux-pppa/tmux/ubuntu jammy main"
+          - apt-get update
 
       # Custom Actions
       # Custom Actions
