@@ -32,11 +32,6 @@ stages:
       # Custom Actions
       # Custom Actions
 
-      - name: apt
-        type: apt
-        sources:
-          - path: modules/apt.inst
-
       - name: one-password
         type: includes
         includes:
@@ -47,15 +42,10 @@ stages:
         includes:
           - modules/docker.yml
 
-      - name: flatpak
-        type: flatpak
-        system:
-          reponame: flathub
-          install:
-            - comcom.obsproject.Studio
-            - com.github.wwmm.easyeffects
-            - com.obsproject.Studio.Plugin.DroidCam
-          repourl: https://flathub.org/repo/flathub.flatpakrepo
+      - name: apt
+        type: apt
+        sources:
+          - path: modules/apt.inst
 
       - name: howdy
         type: meson
@@ -66,6 +56,16 @@ stages:
           - type: git
             branch: beta
             url: https://github.com/boltgolt/howdy.git
+
+      - name: flatpak
+        type: flatpak
+        system:
+          reponame: flathub
+          install:
+            - comcom.obsproject.Studio
+            - com.github.wwmm.easyeffects
+            - com.obsproject.Studio.Plugin.DroidCam
+          repourl: https://flathub.org/repo/flathub.flatpakrepo
 
       - name: presets
         type: shell
