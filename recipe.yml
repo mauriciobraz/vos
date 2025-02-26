@@ -43,7 +43,7 @@ stages:
           fix_broken: true
           fix_missing: true
           no_recommends: true
-          install_suggests: true
+          install_suggests: false
 
       - name: docker
         type: includes
