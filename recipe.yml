@@ -31,7 +31,6 @@ stages:
         commands:
           - lpkg --unlock
           - apt-get update
-          - apt-get upgrade -y
 
       # Custom Actions
       # Custom Actions
