@@ -438,7 +438,7 @@
         "type": {
           "const": "go"
         },
-        "buildFlags": {
+        "buildflags": {
           "oneOf": [
             {
               "type": "string"
@@ -509,14 +509,17 @@
         "type": {
           "const": "meson"
         },
-        "buildFlags": {
+        "buildflags": {
           "type": "array",
           "items": {
             "type": "string"
           }
         },
-        "source": {
-          "$ref": "#/definitions/source"
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/source"
+          }
         },
         "workdir": {
           "type": "string"
@@ -525,7 +528,7 @@
       "required": [
         "name",
         "type",
-        "source"
+        "sources"
       ],
       "additionalProperties": false
     },

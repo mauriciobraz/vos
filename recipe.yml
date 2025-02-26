@@ -27,11 +27,6 @@ stages:
           - lpkg --unlock
           - apt-get update
           - apt-get upgrade -y
-          - apt-get install -y software-properties-common
-          - add-apt-repository -y -n "deb http://ppa.launchpad.net/x4121/ripgrep/ubuntu jammy main"
-          - add-apt-repository -y -n "deb http://ppa.launchpad.net/boltgolt/howdy/ubuntu jammy main"
-          - add-apt-repository -y -n "deb http://ppa.launchpad.net/tmux-pppa/tmux/ubuntu jammy main"
-          - apt-get update
 
       # Custom Actions
       # Custom Actions
@@ -65,6 +60,15 @@ stages:
             - com.github.wwmm.easyeffects
             - com.obsproject.Studio.Plugin.DroidCam
           repourl: https://flathub.org/repo/flathub.flatpakrepo
+
+      - name: howdy
+        type: meson
+        buildflags:
+          - --prefix=/usr
+          - --buildtype=release
+        sources:
+          - url: https://github.com/boltgolt/howdy.git
+            type: git
 
       - name: presets
         type: shell
