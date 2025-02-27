@@ -28,12 +28,15 @@ stages:
         commands:
           - lpkg --unlock
           - apt-get update
-          - apt-get install -y apt-transport-https ca-certificates software-properties-common
-          - apt-add-repository -y ppa:fish-shell/release-3
-          - add-apt-repository -y ppa:boltgolt/howdy
 
       # Custom Actions
       # Custom Actions
+
+      - name: debs
+        type: shell
+        commands:
+          - bash /deb-pkgs/install-debs.sh
+          - rm -rf /deb-pkgs
 
       - name: apt
         type: apt

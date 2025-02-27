@@ -3,9 +3,7 @@ build-essential
 ca-certificates
 cmake
 curl
-fish
 git
-howdy
 jq
 libevdev-dev
 libinih-dev
