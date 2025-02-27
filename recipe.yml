@@ -7,6 +7,7 @@ name: Vesper's Vanilla Desktop
 
 stages:
   - id: build
+    addincludes: true
     singlelayer: false
 
     labels:
@@ -117,4 +118,3 @@ stages:
           - rm -rf /var/tmp/*
 
 includespath: includes.container
-addincludes: true
