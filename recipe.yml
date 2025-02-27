@@ -28,34 +28,27 @@ stages:
         commands:
           - lpkg --unlock
           - apt-get update
+          - apt-get install -y apt-transport-https ca-certificates software-properties-common
+          - apt-add-repository -y ppa:fish-shell/release-3
+          - add-apt-repository -y ppa:boltgolt/howdy
 
       # Custom Actions
       # Custom Actions
-
-      - name: one-password
-        type: includes
-        includes:
-          - modules/one-password.yml
-
-      - name: docker
-        type: includes
-        includes:
-          - modules/docker.yml
 
       - name: apt
         type: apt
         sources:
           - path: modules/apt.inst
 
-      - name: howdy
-        type: meson
-        buildflags:
-          - --prefix=/usr
-          - --buildtype=release
-        sources:
-          - type: git
-            branch: beta
-            url: https://github.com/boltgolt/howdy.git
+      - name: docker
+        type: includes
+        includes:
+          - modules/docker.yml
+
+      - name: one-password
+        type: includes
+        includes:
+          - modules/one-password.yml
 
       - name: flatpak
         type: flatpak

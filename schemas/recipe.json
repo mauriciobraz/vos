@@ -19,6 +19,31 @@
       "items": {
         "$ref": "definitions.json#/definitions/stage"
       }
+    },
+    "path": {
+      "type": "string"
+    },
+    "parentpath": {
+      "type": "string"
+    },
+    "downloadspath": {
+      "type": "string"
+    },
+    "sourcespath": {
+      "type": "string"
+    },
+    "includespath": {
+      "type": "string"
+    },
+    "pluginpath": {
+      "type": "string"
+    },
+    "containerfile": {
+      "type": "string"
+    },
+    "finalize": {
+      "type": "array",
+      "items": {}
     }
   },
   "required": [

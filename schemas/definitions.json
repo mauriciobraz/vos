@@ -620,10 +620,22 @@
           "type": "boolean"
         },
         "labels": {
-          "type": "object"
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "env": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
         },
         "args": {
-          "type": "object"
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
         },
         "runs": {
           "$ref": "#/definitions/runCommands"
@@ -662,6 +674,9 @@
         },
         "cmd": {
           "$ref": "#/definitions/commandConfig"
+        },
+        "addincludes": {
+          "type": "boolean"
         }
       },
       "required": [
