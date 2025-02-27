@@ -14,7 +14,8 @@ stages:
       maintainer: Maurício Braz
 
     args:
-      DEBIAN_FRONTEND: noninteractive
+      DEBIAN_FRONTEND: "noninteractive"
+      DEBCONF_NONINTERACTIVE_SEEN: "true"
 
     runs:
       commands:
@@ -67,7 +68,7 @@ stages:
       - name: packages
         type: shell
         commands:
-          - gdebi -n /pkgs/howdy_2.6.1.deb
+          - yes b | gdebi --non-interactive /pkgs/howdy_2.6.1.deb
           - rm -rf /pkgs
 
       # Custom Actions
