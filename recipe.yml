@@ -65,24 +65,6 @@ stages:
           - mkdir -p $EASY_EFFECTS_FOLDER/presets && cp -r /usr/share/presets/* $EASY_EFFECTS_FOLDER/
           - chmod -R 755 $EASY_EFFECTS_FOLDER
 
-      - name: howdy-install
-        type: shell
-        commands:
-          - python3 -m venv /opt/howdy-venv
-          - . /opt/howdy-venv/bin/activate
-          - git clone --depth 1 --branch beta https://github.com/boltgolt/howdy.git /tmp/howdy
-          - cd /tmp/howdy
-          - sed -i "s/sudo python3/python3/" install/postinst
-          - sed -i "s|/usr/local/bin/howdy|/opt/howdy-venv/bin/howdy|" install/postinst
-          - meson setup build --prefix=/usr
-          - meson compile -C build
-          - meson install -C build
-          - echo "[core]" > /etc/howdy/config.ini
-          - echo "device_path = /dev/video0" >> /etc/howdy/config.ini
-          - echo "profile = b" >> /etc/howdy/config.ini
-          - rm -rf /tmp/howdy
-          - apt-get autoremove -y --purge
-
       # Custom Actions
       # Custom Actions
 
