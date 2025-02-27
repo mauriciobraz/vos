@@ -3,6 +3,7 @@ build-essential
 ca-certificates
 cmake
 curl
+gdebi
 git
 jq
 libevdev-dev
