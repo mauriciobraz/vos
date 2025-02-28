@@ -33,37 +33,14 @@ stages:
       # Custom Actions
       # Custom Actions
 
-      - name: apt
-        type: apt
-        sources:
-          - path: modules/apt.inst
-
-      - name: docker
+      - name: includes
         type: includes
         includes:
-          - modules/docker.yml
-
-      - name: one-password
-        type: includes
-        includes:
-          - modules/one-password.yml
-
-      - name: flatpak
-        type: flatpak
-        system:
-          reponame: flathub
-          install:
-            - comcom.obsproject.Studio
-            - com.github.wwmm.easyeffects
-            - com.obsproject.Studio.Plugin.DroidCam
-          repourl: https://flathub.org/repo/flathub.flatpakrepo
-
-      - name: presets
-        type: shell
-        commands:
-          - EASY_EFFECTS_FOLDER=/var/lib/flatpak/app/com.github.wwmm.easyeffects/current/active/files/easy-effects/
-          - mkdir -p $EASY_EFFECTS_FOLDER/presets && cp -r /usr/share/presets/* $EASY_EFFECTS_FOLDER/
-          - chmod -R 755 $EASY_EFFECTS_FOLDER
+          - modules/10-build-essentials.yml
+          - modules/50-add-1password.yml
+          - modules/50-add-docker.yml
+          - modules/60-common.yml
+          - modules/75-howdy.yml
 
       # Custom Actions
       # Custom Actions

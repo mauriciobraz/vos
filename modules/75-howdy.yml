@@ -1,0 +1,6 @@
+# yaml-language-server: $schema=../schemas/module.json
+
+name: howdy
+type: shell
+commands:
+  - echo f | apt install /pkgs/howdy_2.6.1.deb -y
