@@ -3,8 +3,14 @@
 name: howdy
 type: shell
 commands:
-  - mv /usr/lib/python3.12/EXTERNALLY-MANAGED /usr/lib/python3.12/EXTERNALLY-MANAGED.bak
-  - wget https://bootstrap.pypa.io/get-pip.py /tmp/get-pip.py
+  - export DEBIAN_FRONTEND=noninteractive
+  - export HOWDY_NO_PROMPT=true
+  - apt-get update
+  - apt-get install -y python3-dev libopencv-dev cmake build-essential libpam-python
+  - wget https://bootstrap.pypa.io/get-pip.py -O /tmp/get-pip.py
   - python3 /tmp/get-pip.py
   - pip3 install dlib
-  - sudo dpkg -i --ignore-depends=python3-pip /pkgs/howdy_2.6.1.deb
+  - mkdir -p /etc/howdy
+  - echo -e "[video]\ndevice_path = /dev/null\ncertainty = 5" > /etc/howdy.ini
+  - dpkg -i --ignore-depends=python3-pip /pkgs/howdy_2.6.1.deb || true
+  - apt-get install -f -y

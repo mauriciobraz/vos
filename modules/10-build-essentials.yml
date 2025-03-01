@@ -11,6 +11,7 @@ sources:
       - libevdev-dev
       - libinih-dev
       - libopencv-dev
+      - libpam-python
       - libpam0g-dev
       - make
       - python3
