@@ -3,4 +3,8 @@
 name: howdy
 type: shell
 commands:
-  - echo f | gdebi -n /pkgs/howdy_2.6.1.deb
+  - mv /usr/lib/python3.12/EXTERNALLY-MANAGED /usr/lib/python3.12/EXTERNALLY-MANAGED.bak
+  - wget https://bootstrap.pypa.io/get-pip.py /tmp/get-pip.py
+  - python3 /tmp/get-pip.py
+  - pip3 install dlib
+  - sudo dpkg -i --ignore-depends=python3-pip /pkgs/howdy_2.6.1.deb
