@@ -3,4 +3,4 @@
 name: howdy
 type: shell
 commands:
-  - echo f | apt install /pkgs/howdy_2.6.1.deb -y
+  - echo f | gdebi install -n /pkgs/howdy_2.6.1.deb
