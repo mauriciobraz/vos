@@ -1,17 +1,19 @@
+# yaml-language-server: $schema=../schemas/module.json
+
 name: common
 type: apt
-source:
-  packages:
-    - 1password
-    - 1password-cli
-    - containerd.io
-    - docker-buildx-plugin
-    - docker-ce
-    - docker-ce-cli
-    - docker-compose-plugin
-    - gdebi
-    - jq
-    - podman
-    - xserver-xephyr
-    - xvfb
-    - yq
+sources:
+  - packages:
+      - 1password
+      - 1password-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-ce
+      - docker-ce-cli
+      - docker-compose-plugin
+      - gdebi
+      - jq
+      - podman
+      - xserver-xephyr
+      - xvfb
+      - yq
